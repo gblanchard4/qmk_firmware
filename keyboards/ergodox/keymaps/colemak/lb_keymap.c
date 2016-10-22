@@ -4,7 +4,7 @@
 
 #define BASE 0 // default layer
 #define SYMB 1 // symbols
-#define MDIA 2 // media keys
+#define NPAD 2 // numpad
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
@@ -16,7 +16,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * | BkSp   |   A  |   R  |   S  |   T  |   D  |------|           |------|   H  |   N  |   E  |   I  |O / L2|   '    |
  * |--------+------+------+------+------+------| Hyper|           | Meh  |------+------+------+------+------+--------|
- * | LShift |Z/Ctrl|   X  |   C  |   V  |   B  |      |           |      |   K  |   M  |   ,  |   .  |//Ctrl| RShift |
+ * |Shft2Cap|Z/Undo|X/Cut |C/Copy|V/Paste|  B  |      |           |      |   K  |   M  |   ,  |   .  |//Ctrl|Shft2Cap|
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |Grv/L1|  '"  |AltShf| Left | Right|                                       |  Down|  Up  | Left | Right| RCTL  |
  *   `----------------------------------'                                       `----------------------------------'
@@ -34,18 +34,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // left hand
         KC_GRV,         KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   LALT(LCTL(KC_DEL)),
         KC_DELT,        KC_Q,         KC_W,   KC_F,   KC_P,   KC_G,   KC_LBRC,
-        KC_LCTL,         KC_A,         KC_R,   KC_S,   KC_T,   KC_D,
-        KC_LSFT,        CTL_T(KC_Z),  KC_X,   KC_C,   KC_V,   KC_B,   KC_MINS,
+        KC_LCTL,        KC_A,         KC_R,   KC_S,   KC_T,   KC_D,
+        FN2,     CTL_T(KC_Z),         KC_X,   KC_C,   KC_V,   KC_B,   KC_MINS,
         KC_ESC,KC_QUOT,      LALT(KC_LSFT),  KC_LEFT, MO(2),
                                                KC_VOLU,  KC_VOLD,
                                                               KC_MPRV,
                                                KC_SPC,KC_DEL,KC_MNXT,
         // right hand
-             KC_PSCR,     KC_6,   KC_7,   KC_8,   KC_9,   KC_0,             KC_CAPS,
-             KC_RBRC,    KC_J,   KC_L,   KC_U,   KC_Y,   KC_SCLN,          KC_BSLS,
-                          KC_H,   KC_N,   KC_E,   KC_I,   LT(MDIA, KC_O),   KC_QUOT,
-             KC_EQL,KC_K,   KC_M,   KC_COMM,KC_DOT, KC_SLSH,   KC_RSFT,
-                                  KC_DOWN,  KC_UP,KC_LEFT,KC_RGHT,          KC_RCTL,
+        KC_PSCR,     KC_6,   KC_7,   KC_8,   KC_9,   KC_0,             KC_CAPS,
+        KC_RBRC,     KC_J,   KC_L,   KC_U,   KC_Y,   KC_SCLN,          KC_BSLS,
+                     KC_H,   KC_N,   KC_E,   KC_I,   LT(MDIA, KC_O),   KC_QUOT,
+        KC_EQL,      KC_K,   KC_M,   KC_COMM,KC_DOT, KC_SLSH,          FN3,
+                             KC_DOWN,KC_UP,  KC_LEFT,KC_RGHT,          KC_RCTL,
              KC_LALT,        KC_CALC,
              KC_PGUP,
              KC_PGDN,KC_ENT, KC_BSPC
@@ -137,7 +137,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 const uint16_t PROGMEM fn_actions[] = {
     [1] = ACTION_LAYER_TAP_TOGGLE(SYMB)                // FN1 - Momentary Layer 1 (Symbols)
-    
+    [2] =  ACTION_FUNCTION(LSFT_2_CAP),                    // FN29 = Toggle CapsLock if both Shifts hit
+    [3] =  ACTION_FUNCTION(RSFT_2_CAP),                    // FN30 = Toggle CapsLock if both Shifts hit
+
 };
 
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
@@ -182,4 +184,51 @@ void matrix_scan_user(void) {
             break;
     }
 
+
+    // Toggle capslock when pressing both left and right shift keys
+    //
+    if (id == LSFT_2_CAP || id == RSFT_2_CAP) {
+        uint8_t curr_weak_mods = 0;
+
+        // Set weak_mods value for each shift key
+        if (id == LSFT_2_CAP) {
+            dprintf("->left shift: %u\n", id);
+            curr_weak_mods = MOD_BIT(KC_LSHIFT);
+        } else {
+            dprintf("->right shift: %u\n", id);
+            curr_weak_mods = MOD_BIT(KC_RSHIFT);
+        }
+
+        if (record->event.pressed) {
+
+            // Get the previous weak_mods value
+            uint8_t prev_weak_mods = get_weak_mods();
+            dprintf("-->prev_weak_mods: %u\n", prev_weak_mods);
+
+            // When a shift key is pressed, check previous weak_mods value.
+            // If 0, then no shift key is held down.
+            // If not 0, then at least one shift key is held down.
+            if (prev_weak_mods != 0) {
+
+                // Toggle capslock if more than one shift key is pressed.
+                dprintf("--->press, toggle capslock\n");
+                add_key(KC_CAPSLOCK);
+                send_keyboard_report();
+                del_key(KC_CAPSLOCK);
+                send_keyboard_report();
+            } else {
+
+                // Set the appropriate weak_mods value if just one shift key is pressed.
+                dprintf("--->press, curr_weak_mods: %u\n", curr_weak_mods);
+                add_weak_mods(curr_weak_mods);
+                send_keyboard_report();
+            }
+        } else {
+
+            // Unset the weak_mods value when shift key is released.
+            dprintf("--->release, curr_weak_mods: %u\n", curr_weak_mods);
+            del_weak_mods(curr_weak_mods);
+            send_keyboard_report();
+        }
+    }
 };
