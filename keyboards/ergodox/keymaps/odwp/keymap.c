@@ -35,8 +35,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_GRV,         KC_1,         KC_2,         KC_3,        KC_4,      KC_5,          KC_MUTE,
         KC_TAB,         KC_Q,         KC_W,         KC_F,        KC_P,      KC_G,          KC_LBRC,
         KC_LCTL,        KC_A,         KC_R,         KC_S,        KC_T,      KC_D,
-        FN2,     CTL_T(KC_Z),  CTL_T(KC_X),  CTL_T(KC_C), CTL_T(KC_V),      KC_B,          KC_MINS,
-        KC_ESC,      KC_LGUI,LALT(KC_LSFT),        MO(1),       MO(2),
+        KC_FN2,     CTL_T(KC_Z),  CTL_T(KC_X),  CTL_T(KC_C), CTL_T(KC_V),      KC_B,          KC_MINS,
+        KC_ESC,      KC_LGUI,  LALT(KC_LSFT),        MO(1),       MO(2),
                                                               KC_VOLU,   KC_VOLD,
                                                                          KC_MPRV,
                                                   KC_SPC,      KC_DEL,   KC_MNXT,
@@ -49,7 +49,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                     KC_MPLY,       KC_CALC,
                     KC_PGUP,
                     KC_PGDN,        KC_ENT,        KC_BSPC
-    ),
+),
 /* Keymap 1: Symbol Layer
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
@@ -126,7 +126,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // right hand
        KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
        KC_TRNS,  KC_TRNS, KC_KP_7, KC_KP_8, KC_KP_9, KC_TRNS, KC_TRNS,
-                     FN6, KC_KP_4, KC_KP_5, KC_KP_6, KC_TRNS, KC_MPLY,
+                     KC_FN6, KC_KP_4, KC_KP_5, KC_KP_6, KC_TRNS, KC_MPLY,
        KC_TRNS,  KC_SLSH, KC_KP_1, KC_KC_2, KC_KP_3, KC_PENT, KC_TRNS,
                           KC_KP_0, KC_KP_0, KC_DOT,  KC_PENT, KC_TRNS,
        KC_TRNS, KC_TRNS,
@@ -147,14 +147,24 @@ enum function_id {
     RSFT_2_CAP,
 };
 
+// const uint16_t PROGMEM fn_actions[] = {
+//     [1] = ACTION_LAYER_TAP_TOGGLE(SYMB),        // FN1  = Momentary Layer 1 (Symbols)
+//     [2] = ACTION_FUNCTION(LSFT_2_CAP),          // FN29 = Toggle CapsLock if both Shifts hit
+//     [3] = ACTION_FUNCTION(RSFT_2_CAP),          // FN30 = Toggle CapsLock if both Shifts hit
+//     [4] = ACTION_LAYER_MOMENTARY(1),            // FN4  = Momentary Layer to use with F* keys on top row
+//     [5] = ACTION_LAYER_MOMENTARY(2),            // FN5  = Momentary to use with F* keys on top row + util
+//     [6] = ACTION_MODS_KEY(KC_LSFT, KC_SCLN),    // FN1  = Shifted SemiColon // : in Workman
+// };
+
 const uint16_t PROGMEM fn_actions[] = {
-    [1] = ACTION_LAYER_TAP_TOGGLE(SYMB),                // FN1 - Momentary Layer 1 (Symbols)
-    [2] = ACTION_FUNCTION(LSFT_2_CAP),                    // FN29 = Toggle CapsLock if both Shifts hit
-    [3] = ACTION_FUNCTION(RSFT_2_CAP),                    // FN30 = Toggle CapsLock if both Shifts hit
-    [4] = ACTION_LAYER_MOMENTARY(1),            // FN4- momentary Layer to use with F* keys on top row
-    [5] = ACTION_LAYER_MOMENTARY(2),            // FN5 - momentary to use with F* keys on top row + util
-    [6] = ACTION_MODS_KEY(KC_LSFT, KC_SCLN),             // FN1  = Shifted SemiColon // : in Workman
+    [1] = ACTION_LAYER_MOMENTARY(1),        // FN1  = Momentary Layer 1 (Symbols)
+    [2] = ACTION_LAYER_MOMENTARY(2),          // FN29 = Toggle CapsLock if both Shifts hit
+    [3] = ACTION_LAYER_MOMENTARY(1),          // FN30 = Toggle CapsLock if both Shifts hit
+    [4] = ACTION_LAYER_MOMENTARY(2),            // FN4  = Momentary Layer to use with F* keys on top row
+    [5] = ACTION_LAYER_MOMENTARY(1),            // FN5  = Momentary to use with F* keys on top row + util
+    [6] = ACTION_LAYER_MOMENTARY(1),    // FN1  = Shifted SemiColon // : in Workman
 };
+
 
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
