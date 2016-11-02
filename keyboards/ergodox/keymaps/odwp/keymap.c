@@ -4,7 +4,8 @@
 
 #define BASE 0 // default layer
 #define SYMB 1 // symbols
-#define NPAD 2 // numpad
+#define MDIA 2 // Media Layer
+// #define NPAD 2 // numpad
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
