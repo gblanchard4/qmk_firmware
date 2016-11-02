@@ -208,6 +208,7 @@ void matrix_scan_user(void) {
             // none
             break;
     }
+};
 
 void action_function(keyrecord_t *record, uint8_t id, uint8_t opt)
     {
