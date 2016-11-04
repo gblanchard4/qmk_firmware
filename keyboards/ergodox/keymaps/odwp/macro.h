@@ -9,7 +9,7 @@ enum function_id {
 };
 
 const uint16_t PROGMEM fn_actions[] = {
-    [1] = ACTION_LAYER_TAP_TOGGLE(SYMB),        // FN1  = Momentary Layer 1 (Symbols)
+    // [1] = ACTION_LAYER_TAP_TOGGLE(SYMB),        // FN1  = Momentary Layer 1 (Symbols)
     [2] = ACTION_FUNCTION(LSFT_2_CAP),          // FN29 = Toggle CapsLock if both Shifts hit
     [3] = ACTION_FUNCTION(RSFT_2_CAP),          // FN30 = Toggle CapsLock if both Shifts hit
     [4] = ACTION_LAYER_MOMENTARY(1),            // FN4  = Momentary Layer to use with F* keys on top row
