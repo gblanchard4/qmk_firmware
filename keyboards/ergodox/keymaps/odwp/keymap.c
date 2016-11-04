@@ -1,5 +1,3 @@
-#include <stdint.h>
-#include <stdbool.h>
 #include "macro.h"
 #include "keycode.h"
 #include "action.h"
