@@ -2,6 +2,20 @@
 #include "debug.h"
 #include "action_layer.h"
 #include "macro.h"
+// WUT
+#include "keycode.h"
+#include "action.h"
+#include "action_util.h"
+#include "action_code.h"
+#include "action_macro.h"
+#include "action_layer.h"
+#include "bootloader.h"
+#include "report.h"
+#include "host.h"
+#include "print.h"
+#include "debug.h"
+#include "keymap.h"
+#include "ergodox.h"
 
 #define BASE 0 // default layer
 #define SYMB 1 // symbols
