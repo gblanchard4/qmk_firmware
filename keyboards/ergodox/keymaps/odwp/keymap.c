@@ -1,8 +1,4 @@
-#include "ergodox.h"
-#include "debug.h"
-#include "action_layer.h"
 #include "macro.h"
-// WUT
 #include "keycode.h"
 #include "action.h"
 #include "action_util.h"
