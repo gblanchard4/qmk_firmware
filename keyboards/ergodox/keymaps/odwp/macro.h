@@ -1,3 +1,5 @@
+
+
 /* id for user defined functions & macros */
 enum function_id {
     TEENSY_KEY,
@@ -9,7 +11,7 @@ enum function_id {
 };
 
 const uint16_t PROGMEM fn_actions[] = {
-    // [1] = ACTION_LAYER_TAP_TOGGLE(SYMB),        // FN1  = Momentary Layer 1 (Symbols)
+    [1] = ACTION_LAYER_TAP_TOGGLE(SYMB),        // FN1  = Momentary Layer 1 (Symbols)
     [2] = ACTION_FUNCTION(LSFT_2_CAP),          // FN29 = Toggle CapsLock if both Shifts hit
     [3] = ACTION_FUNCTION(RSFT_2_CAP),          // FN30 = Toggle CapsLock if both Shifts hit
     [4] = ACTION_LAYER_MOMENTARY(1),            // FN4  = Momentary Layer to use with F* keys on top row
@@ -38,6 +40,28 @@ void matrix_init_user(void) {
 
 };
 
+// Runs constantly in the background, in a loop.
+void matrix_scan_user(void) {
+
+    uint8_t layer = biton32(layer_state);
+
+    ergodox_board_led_off();
+    ergodox_right_led_1_off();
+    ergodox_right_led_2_off();
+    ergodox_right_led_3_off();
+    switch (layer) {
+      // TODO: Make this relevant to the ErgoDox EZ.
+        case 1:
+            ergodox_right_led_1_on();
+            break;
+        case 2:
+            ergodox_right_led_2_on();
+            break;
+        default:
+            // none
+            break;
+    }
+};
 
 void action_function(keyrecord_t *record, uint8_t id, uint8_t opt)
     {
