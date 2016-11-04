@@ -102,14 +102,11 @@ void action_function(keyrecord_t *record, uint8_t id, uint8_t opt)
     // Toggle capslock when pressing both left and right shift keys
     //
     if (id == LSFT_2_CAP && id == RSFT_2_CAP) {
-        uint8_t curr_weak_mods = 0;
             add_key(KC_R);            
             add_key(KC_L);
             send_keyboard_report();
     }
     else if (id == LSFT_2_CAP || id == RSFT_2_CAP) {
-        uint8_t curr_weak_mods = 0;
-
         // Set weak_mods value for each shift key
         if (id == LSFT_2_CAP) {
             add_key(KC_L);
