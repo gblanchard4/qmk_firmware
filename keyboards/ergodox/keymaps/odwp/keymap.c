@@ -3,7 +3,6 @@
 #include "action_layer.h"
 #include "macro.h"
 
-
 #define BASE 0 // default layer
 #define SYMB 1 // symbols
 #define NPAD 2 // numpad
@@ -135,4 +134,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_TRNS,
        KC_TRNS, KC_TRNS, KC_WBAK
 ),
+};
+
+
+
+/* id for user defined functions & macros */
+enum function_id {
+    TEENSY_KEY,
+    CUSTOM_KEY,
+    L_CTRL_ALT_ENT,
+    R_CTRL_ALT_ENT,
+    LSFT_2_CAP,
+    RSFT_2_CAP,
+};
+
+const uint16_t PROGMEM fn_actions[] = {
+    [1] = ACTION_LAYER_TAP_TOGGLE(SYMB),        // FN1  = Momentary Layer 1 (Symbols)
+    [2] = ACTION_FUNCTION(LSFT_2_CAP),          // FN29 = Toggle CapsLock if both Shifts hit
+    [3] = ACTION_FUNCTION(RSFT_2_CAP),          // FN30 = Toggle CapsLock if both Shifts hit
+    [4] = ACTION_LAYER_MOMENTARY(1),            // FN4  = Momentary Layer to use with F* keys on top row
+    [5] = ACTION_LAYER_MOMENTARY(2),            // FN5  = Momentary to use with F* keys on top row + util
+    [6] = ACTION_MODS_KEY(KC_LSFT, KC_SCLN),    // FN1  = Shifted SemiColon // : in Workman
 };
